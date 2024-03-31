@@ -43,7 +43,7 @@
                 const playerId = command.playerId;
                 delete state.players[playerId];
             }
-            
+
             function addFruit(command) {
                 const fruitId = command.fruitId;
                 const fruitX = command.fruitX;
@@ -51,13 +51,13 @@
 
                 state.fruits[fruitId] = {
                     x: fruitX,
-                    y: fruitY
-                }
+                    y: fruitY,
+                };
             }
 
             function removeFruit(command) {
                 const fruitId = command.fruitId;
-                delete state.fruits[fruitId]
+                delete state.fruits[fruitId];
             }
 
             function createGame() {
@@ -102,28 +102,31 @@
                     };
 
                     const keyPressed = command.keyPressed;
-                    const player = state.players[command.playerId];
-
+                    const playerId = command.playerId;
+                    const player = state.players[playerId];
                     const moveFunction = acceptedMoves[keyPressed];
+
                     if (player && moveFunction) {
                         moveFunction(player);
-                        checkForFruitCollision()
+                        checkForFruitCollision(playerId);
                     }
                 }
 
-                function checkForFruitCollision () {
-                    for (const playerId in state.players) {
-                        const player = state.players[playerId]
+                function checkForFruitCollision(playerId) {
+                    const player = state.players[playerId];
 
-                        for (const fruitId in state.fruits) {
-                            const fruit = state.fruits[fruitId]
+                    for (const fruitId in state.fruits) {
+                        const fruit = state.fruits[fruitId];
 
-                            console.log (`checking collision of ${playerId} and ${fruitId} `)
+                        console.log(
+                            `checking collision of ${playerId} and ${fruitId} `,
+                        );
 
-                            if (player.x === fruit.x && player.y === fruit.y) {
-                                console.log(`collision between ${player} and ${fruit}`)
-                                removeFruit ({fruitId: fruitId})
-                            }
+                        if (player.x === fruit.x && player.y === fruit.y) {
+                            console.log(
+                                `collision between ${player} and ${fruit}`,
+                            );
+                            removeFruit({ fruitId: fruitId });
                         }
                     }
                 }
@@ -198,6 +201,14 @@
 
                 requestAnimationFrame(renderScreen);
             }
+
+
+            addPlayer({playerId: "player1", playerX: 0, playerY:0})
+
+            addFruit({fruitId:"maça", fruitX:2, fruitY:3})
+            addFruit({fruitId:"uva", fruitY: 4, fruitX:6})
+            addFruit({fruitId:"banana", fruitY: 8, fruitX:2})
+
         </script>
     </body>
 </html>
